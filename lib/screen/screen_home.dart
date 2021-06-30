@@ -1,3 +1,4 @@
+// 앱의 메인 화면을 담당하는 파일
 import 'package:flutter/material.dart';
 import 'package:the_quiz/model/model_quiz.dart';
 import 'package:the_quiz/screen/screen_question.dart';
@@ -10,8 +11,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Quiz quiz = Quiz.fromMap({// map 형식의 데이터를 받아서 Quiz타입 변수에 넣어주는 부분
     'index': 1,
     'title': '스위치 - 전구',
-    'question': '스위치 3개가 다른 방의 전구 3개와 각각 연결되어 있다.\n 스위치는 ON/OFF 조작을 자유롭게 할 수 있으며 초기에는 꺼져있다.\n 단 한 번만 다른 방으로 이동해서 전구의 상태를 확인할 수 있다고 할 때 각각의 스위치가 연결된 전구를 알아낼 수 있는 방법을 구하시오.',
-    'solution': '정답이 들어가는 부분입니다.',
+    'question': ' 스위치 3개가 다른 방의 전구 3개와 각각 연결되어 있다.\n 스위치는 ON/OFF 조작을 자유롭게 할 수 있으며 초기에는 꺼져있다.\n 단 한 번만 다른 방으로 이동해서 전구의 상태를 확인할 수 있다고 할 때 각각의 스위치가 연결된 전구를 알아낼 수 있는 방법을 구하시오.',
+    'solution': ' 첫 번째 스위치는 켜고 두 번째 스위치는 끈다.\n 세 번째 스위치는 켜고 충분히 기다린 뒤 끈다.\n 그리고 다른 방으로 이동하면 켜져 있는 전구는 첫 번째 스위치와 연결된 것을 알 수 있다.\n 꺼져있는 두 개의 전구는 뜨거운 정도로 구분할 수 있다. 꺼져있지만 뜨거운 전구가 세 번째 스위치와 연결된 전구이다.',
     'up': 0,
     'down': 0
   });
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 '문제  풀기',
                 style: TextStyle(
-                  fontSize: width * 0.06,
+                  fontSize: width * 0.05,
                   fontWeight: FontWeight.bold,
                 ),
               ),

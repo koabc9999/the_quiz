@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_quiz/model/model_quiz.dart';
+import 'package:the_quiz/screen/screen_solution.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class QuestionScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               color: Colors.yellow,
             ),
             width: width * 0.9,
-            height: height * 0.7,
+            height: height * 0.78,
 
             child: Column(// 내부의 내용을 세로로 정렬함
               children: <Widget>[// 여러개의 위젯을 넣을 수 있게 해줌
@@ -46,12 +47,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 ),
                 Padding(padding: EdgeInsets.only(top: height * 0.03)),
                 Container(
-                  child: AutoSizeText(
+                  child: AutoSizeText(// 문제 내용이 들어가는 위젯. 문자 크기가 자동으로 조정될 수 있음
                     widget.quiz.question,
                     textAlign: TextAlign.center,
-                    maxLines: 10,
+                    maxLines: 7,
                     style: TextStyle(
-                      fontSize: width * 0.044,
+                      fontSize: width * 0.033,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -61,7 +62,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   child: Text(
                     '정답 보기',
                     style: TextStyle(
-                      fontSize: width * 0.06,
+                      fontSize: width * 0.05,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -71,9 +72,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     padding: EdgeInsets.fromLTRB(width * 0.22, height * 0.03, width *0.22, height * 0.03),
                   ),
                   onPressed: () {
-
-                  }
-                )
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SolutionScreen(
+                          quiz: widget.quiz,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Padding(padding: EdgeInsets.only(top: height * 0.04)),
               ],
             ),
           ),
