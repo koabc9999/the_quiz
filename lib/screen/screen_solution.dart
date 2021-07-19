@@ -49,10 +49,10 @@ class _SolutionScreenState extends State<SolutionScreen> {
                   child: AutoSizeText(
                     widget.quiz.solution,
                     textAlign: TextAlign.center,
-                    maxLines: 6,
+                    maxLines: 7,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: width * 0.33,
+                      fontSize: width * 0.36,
                     )
                   ),
                 ),

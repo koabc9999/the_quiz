@@ -52,7 +52,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     textAlign: TextAlign.center,
                     maxLines: 7,
                     style: TextStyle(
-                      fontSize: width * 0.033,
+                      fontSize: width * 0.036,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
