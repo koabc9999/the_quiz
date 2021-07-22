@@ -52,7 +52,7 @@ class _SolutionScreenState extends State<SolutionScreen> {
                     maxLines: 7,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: width * 0.36,
+                      fontSize: width * 0.06,
                     )
                   ),
                 ),

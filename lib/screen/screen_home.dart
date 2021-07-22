@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if(response.statusCode == 200) {// 통신이 문제없이 잘 완료돼었을 경우
       setState(() {
         quizs = parseQuizs(utf8.decode(response.bodyBytes));// response.bodyBytes 메소드로 받은 데이터를 String형식으로 parseQuizs 메소드로 넣어줌
+        print(quizs[0].solution);
         firstQuiz = quizs[0];// 전달받아서 만들어낸 List<Quiz>에서 0번째 데이터를 별도의 변수에 넣어줌
         isLoading = false;
       });
@@ -130,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               Padding(padding: EdgeInsets.only(top: height * 0.035)),
 
-              ElevatedButton(
+              ElevatedButton(//문제를 추가하기 위한 화면으로 전환하는 버튼. 전체 오브젝트 수를 알기 위해서 GET의 필요성이 생김
                 child: Text(
                   '문제 추가',
                   style: TextStyle(
