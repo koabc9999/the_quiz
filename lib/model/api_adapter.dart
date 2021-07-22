@@ -5,3 +5,8 @@ List<Quiz> parseQuizs(String responseBody) {// api 통신으로 전달받은 Str
   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();// Map 형식으로 cast 해준 뒤
   return parsed.map<Quiz>((json) => Quiz.fromJson(json)).toList();// Map 형식의 데이터를 .map 메소드가 가지고 있는 json 데이터 타입을 이용해서 Quiz 인스턴스들의 List로 변환해줌
 }
+
+List<Quiz> parseQuiz(String responseBody) {
+  final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();// 전달받은 json 데이터를 decode해서 Dart의 Map 형식으로 뿌려줌
+  return parsed.map<Quiz>((json) => Quiz.fromJson(json)).toList();// .map<Quiz>() 는 Quiz 모델의 map을 리턴하게됨
+}
