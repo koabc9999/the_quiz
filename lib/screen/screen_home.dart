@@ -12,22 +12,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();// 스낵바를 꺼내기 위해서 필요한 글로벌 키 변수
+
   List<Quiz> quizs = [];// Quiz를 형식으로 가지는 List 변수를 선언해줌
   Quiz firstQuiz;
   bool isLoading = false;
 
   _fetchQuizs() async {
-    setState(() {
-      isLoading = true;
-    });
     var url = Uri.parse('https://the-quiz-backend.herokuapp.com/quiz/1/');// Uri.parse 메소드를 사용해서 String 데이터를 Uri 타입으로 바꿔줌
     final response = await http.get(url);
     if(response.statusCode == 200) {// 통신이 문제없이 잘 완료돼었을 경우
       setState(() {
         quizs = parseQuizs(utf8.decode(response.bodyBytes));// response.bodyBytes 메소드로 받은 데이터를 String형식으로 parseQuizs 메소드로 넣어줌
-        print(quizs[0].solution);
         firstQuiz = quizs[0];// 전달받아서 만들어낸 List<Quiz>에서 0번째 데이터를 별도의 변수에 넣어줌
-        isLoading = false;
       });
     } else {
       throw Exception('failed to load data');
@@ -76,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onWillPop: () async => false,// 안드로이드가 지원하는 뒤로가기 버튼을 끔
       child: SafeArea(
         child: Scaffold(
+          key: _scaffoldKey,// 스낵바 사용을 위해서 스캐폴드의 key 속성을 넣어줌
           appBar: AppBar(
             title: Text('The Quiz App'),
             backgroundColor: Colors.amber[600],
@@ -88,9 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Center(
                 child: Image.asset(
-                  'images/pepe.jpg',// 픽셀이 깨지는걸 방지해서 본래 크기보다 이미지가 커지지는 않고 차지하는 범위가 늘어남
-                  width: width * 0.8,
-                  height: height * 0.4,
+                  'images/cat.jpg',// 픽셀이 깨지는걸 방지해서 본래 크기보다 이미지가 커지지는 않고 차지하는 범위가 늘어남
+                  width: width * 0.92,
+                  height: height * 0.35,
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: height * 0.02)),
@@ -116,6 +114,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: EdgeInsets.fromLTRB(width * 0.22, height * 0.03, width * 0.22, height * 0.03),
                 ),
                 onPressed: () {// 문제 풀기 버튼이 눌렸으 때 실행되는 내용
+                  _scaffoldKey.currentState.showSnackBar(// fetchQuizs 함수가 실행이 완료돼서 화면이 전환되기 전까지 화면의 아래에 새 스낵바를 띄워서 보여주도록 함
+                    SnackBar(
+                      content: Row(// 위젯들이 가로로 정렬될 수 있도록 하는 컨테이너
+                        children: <Widget>[
+                          CircularProgressIndicator(),// 빙글빙글 도는 위젯
+                          Padding(padding: EdgeInsets.only(left: width * 0.036)),
+                          Text("서버를 깨우는 중입니다!"),
+                        ],
+                      ),
+                    ),
+                  );
                   _fetchQuizs().whenComplete(() {
                     return Navigator.push(
                       context,

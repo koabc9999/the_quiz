@@ -9,6 +9,8 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();// 스캐폴드에서 스낵바를 띄우기 위한 키
+
   List<Quiz> quizs;
   Quiz latestQuiz;// 가장 나중에 추가된 퀴즈를 담는 변수
   Quiz postQuiz;// 서버에 추가해줄 데이터를 담을 변수
@@ -41,8 +43,6 @@ class _PostScreenState extends State<PostScreen> {
         "down": 0
       })
     );
-    print(response.statusCode);
-    print((latestQuiz.index + 1).toString() + titleController.text + " " + questionController.text);
   }
 
   Widget build(BuildContext build) {
@@ -53,6 +53,7 @@ class _PostScreenState extends State<PostScreen> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,// 하단에서 올라오는 키보드로 인한 overflow 예방
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text("문제 추가하기"),
           backgroundColor: Colors.amber[600],
@@ -99,16 +100,28 @@ class _PostScreenState extends State<PostScreen> {
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.amber[600],
-
                     padding: EdgeInsets.fromLTRB(width * 0.24, height * 0.028, width * 0.24, height * 0.028),
                   ),
                   onPressed: () {// 데이터를 미리 읽어두면 그 사이에 다른 데이터가 추가되면 index가 꼬일 확률이 높기 때문에 추가하기 직전에 index를 확인해줌
-                    _getLatest();// 서버에서 제일 나중에 추가된 데이터를 읽어오면서 latestQuiz 변수에 넣어줬음
-                    _postQuiz();// 새로 작성된 데이터를 서버에 추가해주는 코드. textField가 비어있는 케이스도 핸들 해주어야함
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    _scaffoldKey.currentState.showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: <Widget>[
+                            CircularProgressIndicator(),
+                            Padding(padding: EdgeInsets.only(left: width * 0.036)),
+                            Text("서버에게 데이터 보내는 중!"),
+                          ]
+                        )
+                      )
                     );
+                    _getLatest().whenComplete(() {// 이전의 데이터를 읽어오기 전에 다음 프로세스를 진행하면 안되기 때문에 whenComplete 사용
+                      _postQuiz().whenComplete(() {// POST가 온전히 끝나기 전에 다음 페이지로 넘어가기 때문에 whenComplete를 사용해서 기다려줌
+                        return Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      });
+                    });
                   },
                 )
               ],
