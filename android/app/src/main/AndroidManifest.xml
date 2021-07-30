@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.the_quiz">
+    package="com.seongmin.the_quiz">
    <application
         android:label="집단지성 퀴즈"
         android:icon="@mipmap/ic_launcher">
