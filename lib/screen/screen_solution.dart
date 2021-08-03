@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SolutionScreen extends StatefulWidget {
-  Quiz quiz;
+  final Quiz quiz;
   SolutionScreen({this.quiz});
 
   _SolutionScreenState createState()=> _SolutionScreenState();

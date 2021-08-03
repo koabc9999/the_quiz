@@ -4,7 +4,7 @@ import 'package:the_quiz/screen/screen_solution.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class QuestionScreen extends StatefulWidget {
-  Quiz quiz;
+  final Quiz quiz;
   QuestionScreen({this.quiz});// 해당 클래스를 선언할 때 넣어준 첫번째 인자를 this.quiz에 넣어줌
 
   _QuestionScreenState createState() => _QuestionScreenState();

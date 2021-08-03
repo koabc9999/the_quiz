@@ -26,7 +26,7 @@ class _PostScreenState extends State<PostScreen> {
     if(response.statusCode == 200) {// byte 단위로된 데이터를 무사히 서버에서 받아 왔다면
       setState(() {
         latestQuiz = Quiz.fromJson(json.decode(response.body));// dart convert 내부에 들어있는 utf instance를 사용했음
-      });
+      });// 외부의 json 형식을 디코드해서 dart가 읽을 수 있는 json 형식으로 바꿔줬음 그리고 Quiz 클래스가 가지고 있는 fromJson메소드를 사용함
     }
   }
   _postQuiz() async {
