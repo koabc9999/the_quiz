@@ -4,6 +4,7 @@ import 'package:the_quiz/model/model_quiz.dart';
 import 'package:the_quiz/model/api_adapter.dart';
 import 'package:the_quiz/screen/screen_question.dart';
 import 'package:the_quiz/screen/screen_post.dart';
+import 'package:the_quiz/screen/screen_all.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -15,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();// 스낵바를 꺼내기 위해서 필요한 글로벌 키 변수
 
   List<Quiz> quizs = [];// Quiz를 형식으로 가지는 List 변수를 선언해줌
+  List<Quiz> allQuizs = [];// 전체 퀴즈를 담게될 수 있는 퀴즈 배열
   Quiz firstQuiz;
   bool isLoading = false;
 
@@ -25,6 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         quizs = parseQuizs(utf8.decode(response.bodyBytes));// response.bodyBytes 메소드로 받은 데이터를 String형식으로 parseQuizs 메소드로 넣어줌
         firstQuiz = quizs[0];// 전달받아서 만들어낸 List<Quiz>에서 0번째 데이터를 별도의 변수에 넣어줌
+      });
+    } else {
+      throw Exception('failed to load data');
+    }
+  }
+  _fetchAll() async {
+    var url = Uri.parse('https://the-quiz-backend.herokuapp.com/quiz/all/');// 전체 퀴즈를 보내주는 url
+    final response = await http.get(url);
+    if(response.statusCode == 200) {
+      setState(() {
+        allQuizs = parseQuizs(utf8.decode(response.bodyBytes));// 불러온 데이터를 파싱해주는 메소드들에 넣어준다
       });
     } else {
       throw Exception('failed to load data');
@@ -138,7 +151,45 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
 
-              Padding(padding: EdgeInsets.only(top: height * 0.035)),
+              Padding(padding: EdgeInsets.only(top: height * 0.026)),
+
+              ElevatedButton(// 전체 문제들의 리스트 타일이 나오는 화면으로 넘어갈 수 있는 버튼
+                child: Text(
+                  '전체 문제 보기',
+                  style: TextStyle(
+                    fontSize: width * 0.05,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amber[600],
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  padding: EdgeInsets.fromLTRB(width * 0.17, height * 0.03, width * 0.17, height * 0.03),
+                ),
+                onPressed: () {
+                  _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: <Widget>[
+                          CircularProgressIndicator(),
+                          Padding(padding: EdgeInsets.only(left: width * 0.036)),
+                          Text('서버를 기다리는 중입니다'),
+                        ],
+                      ),
+                    ),
+                  );
+                  _fetchAll().whenComplete(() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllScreen(allQuizs: allQuizs),
+                      )
+                    );
+                  });
+                },
+              ),
+
+              Padding(padding: EdgeInsets.only(top: height * 0.026)),
 
               ElevatedButton(//문제를 추가하기 위한 화면으로 전환하는 버튼. 전체 오브젝트 수를 알기 위해서 GET의 필요성이 생김
                 child: Text(
