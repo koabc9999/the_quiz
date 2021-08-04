@@ -1,22 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:the_quiz/model/model_quiz.dart';
+import 'package:the_quiz/screen/screen_all_question.dart';
 
 class AllScreen extends StatelessWidget {
   List<Quiz> allQuizs = [];// 전체 퀴즈들이 담길 리스트
 
   AllScreen({this.allQuizs});
-
-  List<Widget> _toListTile() {
-    List<ListTile> list = [];
-    for(int i = 0; i < allQuizs.length; i++){
-
-    }
-  }
   
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final double height = size.height;
-    final double width = size.width;
 
     return SafeArea(
       child: Scaffold(
@@ -32,7 +23,14 @@ class AllScreen extends StatelessWidget {
               child: ListTile(
                 title: Text(allQuizs[index].title),
                 onTap: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AllQuestionScreen(
+                        quiz: allQuizs[index],
+                      ),
+                    ),
+                  );
                 },
               ),
             );
